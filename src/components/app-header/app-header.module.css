@@ -1,0 +1,29 @@
+.header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.nav {
+  display: flex;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+}
+
+.constructor {
+  display: flex;
+}
+
+.orders {
+  display: flex;
+}
+
+.lk {
+  display: flex;
+  justify-content: flex-end;
+}
