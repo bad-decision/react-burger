@@ -1,10 +1,10 @@
 import React from "react";
 
 import AppHeader from "../app-header/app-header";
-import BurgerContstructor from "../burger-constructor/burger-constructor";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
-import data from '../../utils/data'
+import data from '../../utils/data';
 
 const App = () => {
 	return (
@@ -12,7 +12,7 @@ const App = () => {
 			<AppHeader />
 			<main className={styles.main}>
 				<BurgerIngredients data={data} />
-				<BurgerContstructor data={data} />
+				<BurgerConstructor data={data} />
 			</main>
 		</>
 	);

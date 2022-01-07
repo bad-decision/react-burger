@@ -2,11 +2,12 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import React from 'react';
 import styles from './burger-ingredient.module.css';
 import PropTypes from 'prop-types';
+import { BurgerIngredientType } from '../../utils/types';
 
 const BurgerIngredient = ({ data }) => {
 	return (
 		<div className={styles.ingredient}>
-			<img src={data.image} className="ml-4 mr-4" alt="" />
+			<img src={data.image} className="ml-4 mr-4" alt={data.name} />
 
 			<p className={`${styles.price} text text_type_digits-default mt-1 mb-1`}>
 				<span className="mr-2">{data.price}</span>
@@ -18,11 +19,7 @@ const BurgerIngredient = ({ data }) => {
 }
 
 BurgerIngredient.propTypes = {
-	data: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		price: PropTypes.number.isRequired,
-		image: PropTypes.string.isRequired,
-	}).isRequired,
+	data: PropTypes.shape(BurgerIngredientType).isRequired,
 }
 
 export default BurgerIngredient;

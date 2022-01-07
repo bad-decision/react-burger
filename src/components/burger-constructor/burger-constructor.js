@@ -2,8 +2,9 @@ import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktiku
 import React from 'react';
 import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
+import { ConstructorIngredientType } from '../../utils/types';
 
-const BurgerContstructor = ({ data }) => {
+const BurgerConstructor = ({ data }) => {
 	const bun = data.filter(x => x.type === 'bun')[0];
 	const inside = data.filter(x => x.type !== 'bun');
 
@@ -14,7 +15,7 @@ const BurgerContstructor = ({ data }) => {
 					<ConstructorElement
 						type="top"
 						isLocked={true}
-						text={bun.name}
+						text={`${bun.name} (верх)`}
 						price={bun.price}
 						thumbnail={bun.image_mobile}
 					/>
@@ -34,11 +35,12 @@ const BurgerContstructor = ({ data }) => {
 						);
 					})}
 				</div>
+
 				<div className='pl-8'>
 					<ConstructorElement
 						type="bottom"
 						isLocked={true}
-						text={bun.name}
+						text={`${bun.name} (низ)`}
 						price={bun.price}
 						thumbnail={bun.image_mobile}
 					/>
@@ -56,14 +58,8 @@ const BurgerContstructor = ({ data }) => {
 	);
 }
 
-BurgerContstructor.propTypes = {
-	data: PropTypes.arrayOf(PropTypes.shape({
-		_id: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		type: PropTypes.string.isRequired,
-		price: PropTypes.number.isRequired,
-		image_mobile: PropTypes.string.isRequired,
-	})).isRequired,
+BurgerConstructor.propTypes = {
+	data: PropTypes.arrayOf(PropTypes.shape(ConstructorIngredientType)).isRequired,
 }
 
-export default BurgerContstructor;
+export default BurgerConstructor;
