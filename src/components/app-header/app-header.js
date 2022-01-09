@@ -4,7 +4,6 @@ import {
     ListIcon,
     ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
 import styles from "./app-header.module.css";
 
 const AppHeader = () => {
@@ -13,7 +12,9 @@ const AppHeader = () => {
             <nav className={styles.nav}>
                 <div className={`${styles.constructor} p-5 mr-2`}>
                     <BurgerIcon type="primary" />
-                    <span className="text text_type_main-default ml-2">Конструктор</span>
+                    <span className="text text_type_main-default ml-2">
+                        Конструктор
+                    </span>
                 </div>
 
                 <div className={`${styles.orders} p-5`}>

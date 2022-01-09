@@ -1,29 +1,29 @@
 .header {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: center;
-  max-width: 1320px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    max-width: 1320px;
+    margin: 0 auto;
 }
 
 .nav {
-  display: flex;
+    display: flex;
 }
 
 .logo {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .constructor {
-  display: flex;
+    display: flex;
 }
 
 .orders {
-  display: flex;
+    display: flex;
 }
 
 .lk {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
