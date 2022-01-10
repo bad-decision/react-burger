@@ -3,6 +3,12 @@
     flex-direction: column;
 }
 
+.elements {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .items {
     max-height: 440px;
     overflow: auto;

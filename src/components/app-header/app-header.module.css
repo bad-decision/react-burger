@@ -15,15 +15,23 @@
     justify-content: center;
 }
 
+.link {
+    text-decoration: none;
+}
+
 .constructor {
     display: flex;
+    color: #fff;
+    composes: link;
 }
 
 .orders {
     display: flex;
+    composes: link;
 }
 
 .lk {
     display: flex;
     justify-content: flex-end;
+    composes: link;
 }

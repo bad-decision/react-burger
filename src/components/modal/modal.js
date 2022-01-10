@@ -17,20 +17,22 @@ const Modal = ({ children, closeModal, header }) => {
         };
         window.addEventListener("keydown", close);
         return () => window.removeEventListener("keydown", close);
-    }, []);
+    }, [closeModal]);
 
     return ReactDOM.createPortal(
-        <ModalOverlay onClick={closeModal}>
+        <>
+            <ModalOverlay onClick={closeModal}></ModalOverlay>
+
             <div
                 className={`${styles.modal}`}
                 onClick={(e) => e.stopPropagation()}
             >
                 {header && (
-                    <span
+                    <h2
                         className={`${styles.header} text text_type_main-large mt-10 mr-10 ml-10 pt-3 pb-3`}
                     >
                         {header}
-                    </span>
+                    </h2>
                 )}
                 <span className={styles.closeIcon}>
                     <CloseIcon type="primary" onClick={closeModal} />
@@ -38,7 +40,7 @@ const Modal = ({ children, closeModal, header }) => {
 
                 {children}
             </div>
-        </ModalOverlay>,
+        </>,
         modalRoot
     );
 };

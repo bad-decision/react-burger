@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 
 import styles from "./burger-ingredient.module.css";
 import { BurgerIngredientType } from "../../utils/types";
-import ModalOverlay from "../modal-overlay/modal-overlay";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 const BurgerIngredient = ({ ingredient }) => {
     const [isOpenModal, setOpenModal] = useState(false);
+    const { name, price, image } = ingredient;
 
     const closeModal = () => {
         setOpenModal(false);
@@ -21,19 +21,15 @@ const BurgerIngredient = ({ ingredient }) => {
                 className={styles.ingredient}
                 onClick={() => setOpenModal(true)}
             >
-                <img
-                    src={ingredient.image}
-                    className="ml-4 mr-4"
-                    alt={ingredient.name}
-                />
+                <img src={image} className="ml-4 mr-4" alt={name} />
 
                 <p
                     className={`${styles.price} text text_type_digits-default mt-1 mb-1`}
                 >
-                    <span className="mr-2">{ingredient.price}</span>
+                    <span className="mr-2">{price}</span>
                     <CurrencyIcon type="primary" />
                 </p>
-                <p className="text text_type_main-default">{ingredient.name}</p>
+                <p className="text text_type_main-default">{name}</p>
             </div>
 
             {isOpenModal && (
