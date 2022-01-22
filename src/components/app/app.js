@@ -1,21 +1,43 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
 import AppHeader from "../app-header/app-header";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
-import data from '../../utils/data';
+import ErrorBoundary from "../error-boundary/error-boundary";
+import IngredientService from "../../services/ingredient-service";
+import ErrorIndicator from "../error-indicator/error-indicator";
 
 const App = () => {
-	return (
-		<>
-			<AppHeader />
-			<main className={styles.main}>
-				<BurgerIngredients data={data} />
-				<BurgerConstructor data={data} />
-			</main>
-		</>
-	);
+    const [data, setData] = useState(null);
+    const [hasError, setHasError] = useState(false);
+
+    useEffect(() => {
+        const service = new IngredientService();
+        service
+            .getAll()
+            .then((res) => {
+                setData(res.data);
+            })
+            .catch(() => {
+                setHasError(true);
+            });
+    }, []);
+
+    return (
+        <>
+            <AppHeader />
+            <ErrorBoundary>
+                {hasError && <ErrorIndicator />}
+                {data && (
+                    <main className={styles.main}>
+                        <BurgerIngredients data={data} />
+                        <BurgerConstructor data={data} />
+                    </main>
+                )}
+            </ErrorBoundary>
+        </>
+    );
 };
 
 export default App;

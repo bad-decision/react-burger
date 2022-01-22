@@ -1,29 +1,37 @@
 .header {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: center;
-  max-width: 1320px;
-  margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    max-width: 1320px;
+    margin: 0 auto;
 }
 
 .nav {
-  display: flex;
+    display: flex;
 }
 
 .logo {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
+}
+
+.link {
+    text-decoration: none;
 }
 
 .constructor {
-  display: flex;
+    display: flex;
+    color: #fff;
+    composes: link;
 }
 
 .orders {
-  display: flex;
+    display: flex;
+    composes: link;
 }
 
 .lk {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    composes: link;
 }
