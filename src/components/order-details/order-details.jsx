@@ -1,11 +1,14 @@
 import styles from "./order-details.module.css";
 import done from "../../images/done.gif";
+import { useContext } from "react";
+import { OrderContext } from "../../services/order-context";
 
 const OrderDetails = () => {
+    const orderNumber = useContext(OrderContext);
     return (
         <div className={`${styles.wrap} mt-30 mb-30`}>
             <p className={`${styles.orderNumber} text text_type_digits-large`}>
-                034536
+                {orderNumber}
             </p>
             <p className="text text_type_main-medium mt-8 mb-15">
                 идентификатор заказа
