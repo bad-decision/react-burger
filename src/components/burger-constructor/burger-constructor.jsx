@@ -4,17 +4,17 @@ import {
 	CurrencyIcon,
 	Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { BurgerConstructorContext } from "../../services/burger-constructor-context";
-import OrderService from "../../services/order-service";
 import ErrorIndicator from "../error-indicator/error-indicator";
 import { OrderContext } from "../../services/order-context";
+import orderService from "../../services/order-service";
 
 const BurgerConstructor = () => {
-	const { bun, inside } = useContext(BurgerConstructorContext);
+	const { bun, insideItems } = useContext(BurgerConstructorContext);
 	const [isOpenModal, setOpenModal] = useState(false);
 	const [hasError, setHasError] = useState(false);
 	const [orderNumber, setOrderNumber] = useState(null);
@@ -23,11 +23,14 @@ const BurgerConstructor = () => {
 		setOpenModal(false);
 	};
 
-	const doOrder = () => {
-		const service = new OrderService();
-		service
+	const makeOrder = () => {
+		orderService
 			.setOrder({
-				ingredients: [bun._id, ...inside.map(x => x._id), bun._id]
+				ingredients: [
+					bun._id,
+					...insideItems.map((x) => x._id),
+					bun._id,
+				],
 			})
 			.then((res) => {
 				setOrderNumber(res.order.number);
@@ -38,11 +41,13 @@ const BurgerConstructor = () => {
 			});
 	};
 
-	const totalPrice =
-		inside.reduce((sum, item) => sum + item.price, 0) + bun.price * 2;
+	const totalPrice = useMemo(
+		() =>
+			insideItems.reduce((sum, item) => sum + item.price, bun.price * 2),
+		[insideItems, bun]
+	);
 
-	if (hasError)
-		return <ErrorIndicator />
+	if (hasError) return <ErrorIndicator />;
 
 	return (
 		<section className={`${styles.section} pt-25 pl-4 pr-4`}>
@@ -50,7 +55,7 @@ const BurgerConstructor = () => {
 				<div className="pl-8">
 					<ConstructorElement
 						type="top"
-						isLocked={true}
+						isLocked
 						text={`${bun.name} (верх)`}
 						price={bun.price}
 						thumbnail={bun.image_mobile}
@@ -58,7 +63,7 @@ const BurgerConstructor = () => {
 				</div>
 
 				<div className={`${styles.items} custom-scroll`}>
-					{inside.map((item) => {
+					{insideItems.map((item) => {
 						return (
 							<div className={styles.item} key={item._id}>
 								<DragIcon type="primary" />
@@ -75,7 +80,7 @@ const BurgerConstructor = () => {
 				<div className="pl-8">
 					<ConstructorElement
 						type="bottom"
-						isLocked={true}
+						isLocked
 						text={`${bun.name} (низ)`}
 						price={bun.price}
 						thumbnail={bun.image_mobile}
@@ -88,7 +93,7 @@ const BurgerConstructor = () => {
 					{totalPrice} <CurrencyIcon type="primary" />
 				</span>
 
-				<Button type="primary" size="large" onClick={() => doOrder()}>
+				<Button type="primary" size="large" onClick={() => makeOrder()}>
 					Оформить заказ
 				</Button>
 			</div>

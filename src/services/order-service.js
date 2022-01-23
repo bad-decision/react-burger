@@ -1,7 +1,11 @@
 import { postResource } from "./core";
 
-export default class OrderService {
+class OrderService {
     setOrder = async (data) => {
         return await postResource(`/orders`, data);
     };
 }
+
+const orderService = new OrderService();
+
+export default orderService;
