@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Value from "../value/value";
+import Value from "./components/value/value";
 import styles from "./ingredient-details.module.css";
 
 const IngredientDetails = () => {

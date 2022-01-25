@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { BUN } from './ingredientTypes';
 
 const DefaultIngredientType = {
 	name: PropTypes.string.isRequired,
@@ -26,4 +27,15 @@ const IngredientDetailsType = {
 	carbohydrates: PropTypes.number.isRequired
 };
 
-export { BurgerIngredientType, ConstructorIngredientType, IngredientDetailsType };
+const ConstructorBunType = {
+	...DefaultIngredientType,
+	image_mobile: PropTypes.string.isRequired,
+};
+
+const InsideIngredientType = {
+	...DefaultIngredientType,
+	image_mobile: PropTypes.string.isRequired,
+	_hash: PropTypes.string.isRequired
+}
+
+export { BurgerIngredientType, ConstructorIngredientType, IngredientDetailsType, ConstructorBunType, InsideIngredientType };

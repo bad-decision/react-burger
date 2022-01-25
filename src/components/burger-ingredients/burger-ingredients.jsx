@@ -1,7 +1,7 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
-import BurgerTypeIngredients from "../burger-type-ingredients/burger-type-ingredients";
+import BurgerTypeIngredients from "./components/burger-type-ingredients/burger-type-ingredients";
 import { useGetIngredientsQuery } from "../../services/api/ingredients-api";
 import ErrorIndicator from "../error-indicator/error-indicator";
 import Spinner from "../spinner/spinner";

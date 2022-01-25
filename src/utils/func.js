@@ -1,0 +1,1 @@
+export const setHash = (value) => `${value}_${new Date().getTime()}`;

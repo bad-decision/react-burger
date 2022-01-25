@@ -8,3 +8,8 @@
 	display: flex;
 	justify-content: center;
 }
+
+.draggingIngredient {
+	composes: ingredient;
+	opacity: 0.5;
+}
