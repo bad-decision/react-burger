@@ -9,46 +9,46 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 const modalRoot = document.getElementById("react-modals");
 
 const Modal = ({ children, closeModal, header }) => {
-    useEffect(() => {
-        const close = (e) => {
-            if (e.keyCode === 27) {
-                closeModal();
-            }
-        };
-        window.addEventListener("keydown", close);
-        return () => window.removeEventListener("keydown", close);
-    }, [closeModal]);
+	useEffect(() => {
+		const close = (e) => {
+			if (e.keyCode === 27) {
+				closeModal();
+			}
+		};
+		window.addEventListener("keydown", close);
+		return () => window.removeEventListener("keydown", close);
+	}, [closeModal]);
 
-    return ReactDOM.createPortal(
-        <>
-            <ModalOverlay onClick={closeModal}></ModalOverlay>
+	return ReactDOM.createPortal(
+		<>
+			<ModalOverlay onClick={closeModal}></ModalOverlay>
 
-            <div
-                className={`${styles.modal}`}
-                onClick={(e) => e.stopPropagation()}
-            >
-                {header && (
-                    <h2
-                        className={`${styles.header} text text_type_main-large mt-10 mr-10 ml-10 pt-3 pb-3`}
-                    >
-                        {header}
-                    </h2>
-                )}
-                <span className={styles.closeIcon}>
-                    <CloseIcon type="primary" onClick={closeModal} />
-                </span>
+			<div
+				className={`${styles.modal}`}
+				onClick={(e) => e.stopPropagation()}
+			>
+				{header && (
+					<h2
+						className={`${styles.header} text text_type_main-large mt-10 mr-10 ml-10 pt-3 pb-3`}
+					>
+						{header}
+					</h2>
+				)}
+				<span className={styles.closeIcon}>
+					<CloseIcon type="primary" onClick={closeModal} />
+				</span>
 
-                {children}
-            </div>
-        </>,
-        modalRoot
-    );
+				{children}
+			</div>
+		</>,
+		modalRoot
+	);
 };
 
 Modal.propTypes = {
-    header: PropTypes.string,
-    closeModal: PropTypes.func.isRequired,
-    children: PropTypes.element,
+	header: PropTypes.string,
+	closeModal: PropTypes.func.isRequired,
+	children: PropTypes.element,
 };
 
 export default Modal;

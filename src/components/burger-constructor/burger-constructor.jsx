@@ -4,105 +4,120 @@ import {
 	CurrencyIcon,
 	Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { BurgerConstructorContext } from "../../services/burger-constructor-context";
 import ErrorIndicator from "../error-indicator/error-indicator";
-import { OrderContext } from "../../services/order-context";
-import orderService from "../../services/order-service";
+import { useGetIngredientsQuery } from "../../services/api/ingredients-api";
+import Spinner from "../spinner/spinner";
+import { useMakeOrderMutation } from "../../services/api/order-api";
+import { useSelector } from "react-redux";
 
 const BurgerConstructor = () => {
-	const { bun, insideItems } = useContext(BurgerConstructorContext);
+	const { bun, insideItems } = useSelector(
+		(state) => state.burgerConstructor
+	);
 	const [isOpenModal, setOpenModal] = useState(false);
-	const [hasError, setHasError] = useState(false);
-	const [orderNumber, setOrderNumber] = useState(null);
+
+	const [
+		makeOrder,
+		{
+			error: makeOrderError,
+			data: orderNumber,
+			isLoading: makeOrderLoading,
+		},
+	] = useMakeOrderMutation();
 
 	const closeModal = () => {
 		setOpenModal(false);
 	};
 
-	const makeOrder = () => {
-		orderService
-			.setOrder({
-				ingredients: [
-					bun._id,
-					...insideItems.map((x) => x._id),
-					bun._id,
-				],
-			})
-			.then((res) => {
-				setOrderNumber(res.order.number);
-				setOpenModal(true);
-			})
-			.catch(() => {
-				setHasError(true);
-			});
+	const onOrderClick = () => {
+		setOpenModal(true);
+		makeOrder({
+			ingredients: [bun._id, ...insideItems.map((x) => x._id), bun._id],
+		});
 	};
 
 	const totalPrice = useMemo(
 		() =>
-			insideItems.reduce((sum, item) => sum + item.price, bun.price * 2),
+			insideItems?.reduce(
+				(sum, item) => sum + item.price,
+				bun?.price * 2
+			),
 		[insideItems, bun]
 	);
 
-	if (hasError) return <ErrorIndicator />;
+	// if (getIngredientsError || makeOrderError) return <ErrorIndicator />;
+	// if (getIngredientsLoading) return <Spinner />;
+
+	//if (!bun || !insideItems) return null;
 
 	return (
 		<section className={`${styles.section} pt-25 pl-4 pr-4`}>
 			<div className={`${styles.elements} mb-10`}>
-				<div className="pl-8">
-					<ConstructorElement
-						type="top"
-						isLocked
-						text={`${bun.name} (верх)`}
-						price={bun.price}
-						thumbnail={bun.image_mobile}
-					/>
-				</div>
+				{bun && (
+					<div className="pl-8">
+						<ConstructorElement
+							type="top"
+							isLocked
+							text={`${bun.name} (верх)`}
+							price={bun.price}
+							thumbnail={bun.image_mobile}
+						/>
+					</div>
+				)}
 
-				<div className={`${styles.items} custom-scroll`}>
-					{insideItems.map((item) => {
-						return (
-							<div className={styles.item} key={item._id}>
-								<DragIcon type="primary" />
-								<ConstructorElement
-									text={item.name}
-									price={item.price}
-									thumbnail={item.image_mobile}
-								/>
-							</div>
-						);
-					})}
-				</div>
+				{insideItems && (
+					<div className={`${styles.items} custom-scroll`}>
+						{insideItems.map((item) => {
+							return (
+								<div className={styles.item} key={item._id}>
+									<DragIcon type="primary" />
+									<ConstructorElement
+										text={item.name}
+										price={item.price}
+										thumbnail={item.image_mobile}
+									/>
+								</div>
+							);
+						})}
+					</div>
+				)}
 
-				<div className="pl-8">
-					<ConstructorElement
-						type="bottom"
-						isLocked
-						text={`${bun.name} (низ)`}
-						price={bun.price}
-						thumbnail={bun.image_mobile}
-					/>
-				</div>
+				{bun && (
+					<div className="pl-8">
+						<ConstructorElement
+							type="bottom"
+							isLocked
+							text={`${bun.name} (низ)`}
+							price={bun.price}
+							thumbnail={bun.image_mobile}
+						/>
+					</div>
+				)}
 			</div>
 
 			<div className={styles.order}>
 				<span className="text text_type_digits-medium mr-10">
-					{totalPrice} <CurrencyIcon type="primary" />
+					{totalPrice ? totalPrice : 0}{" "}
+					<CurrencyIcon type="primary" />
 				</span>
 
-				<Button type="primary" size="large" onClick={() => makeOrder()}>
+				<Button
+					type="primary"
+					size="large"
+					onClick={() => onOrderClick()}
+				>
 					Оформить заказ
 				</Button>
 			</div>
 
-			{isOpenModal && (
+			{isOpenModal && orderNumber && (
 				<Modal closeModal={closeModal}>
-					<OrderContext.Provider value={orderNumber}>
-						<OrderDetails />
-					</OrderContext.Provider>
+					{makeOrderLoading && <Spinner />}
+					<OrderDetails orderNumber={orderNumber} />
 				</Modal>
 			)}
 		</section>
