@@ -11,7 +11,7 @@ const modalRoot = document.getElementById("react-modals");
 const Modal = ({ children, closeModal, header }) => {
 	useEffect(() => {
 		const close = (e) => {
-			if (e.keyCode === 27) {
+			if (e.key === 'Escape') {
 				closeModal();
 			}
 		};

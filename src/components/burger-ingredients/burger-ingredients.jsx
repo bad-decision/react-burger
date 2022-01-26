@@ -30,25 +30,38 @@ const BurgerIngredients = () => {
 		else if (minOffset === mainOffset) setCurrent(MAIN);
 	};
 
+	const tabClickHandler = (current) => {
+		setCurrent(current);
+
+		let ref = bunRef;
+		if (current === SAUCE) ref = sauceRef;
+		else if (current === MAIN) ref = mainRef;
+		ref.current.scrollIntoView({ behavior: "smooth" });
+	};
+
 	return (
 		<section className={`${styles.wrap} pt-10`}>
 			<h2 className="text text_type_main-large">Соберите бургер</h2>
 
 			<div className={`${styles.tab} mt-5 mb-10`}>
-				<Tab value={BUN} active={current === BUN} onClick={setCurrent}>
+				<Tab
+					value={BUN}
+					active={current === BUN}
+					onClick={tabClickHandler}
+				>
 					Булки
 				</Tab>
 				<Tab
 					value={SAUCE}
 					active={current === SAUCE}
-					onClick={setCurrent}
+					onClick={tabClickHandler}
 				>
 					Соусы
 				</Tab>
 				<Tab
 					value={MAIN}
 					active={current === MAIN}
-					onClick={setCurrent}
+					onClick={tabClickHandler}
 				>
 					Начинки
 				</Tab>

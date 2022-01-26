@@ -15,6 +15,7 @@ import { ingredientsApi } from "../../services/api/ingredients-api";
 import { BUN } from "../../utils/ingredientTypes";
 import {
 	addInsideIngredient,
+	clearConstructor,
 	removeInsideIngredient,
 	setBun,
 } from "../../services/reducers/burger-constructor-slice";
@@ -67,7 +68,10 @@ const BurgerConstructor = () => {
 			ingredients: [bun._id, ...insideItems.map((x) => x._id), bun._id],
 		})
 			.unwrap()
-			.then(() => setOpenModal(true));
+			.then(() => {
+				setOpenModal(true);
+				dispatch(clearConstructor());
+			});
 	};
 
 	const removeInsideItemHandler = (hash) => {

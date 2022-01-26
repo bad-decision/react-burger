@@ -73,7 +73,7 @@ const InsideIngredient = ({ ingredient, handleClose, index }) => {
 };
 
 InsideIngredient.propTypes = {
-	bun: PropTypes.shape(InsideIngredientType),
+	ingredient: PropTypes.shape(InsideIngredientType),
 	handleClose: PropTypes.func.isRequired,
 	index: PropTypes.number.isRequired,
 };

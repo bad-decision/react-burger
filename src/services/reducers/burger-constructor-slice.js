@@ -21,16 +21,17 @@ export const burgerConstructorSlice = createSlice({
 		swapInsideIngredients: (state, action) => {
 			const { index1, index2 } = action.payload;
 			const insideItems = [...state.insideItems];
-			
+
 			const temp = insideItems[index1];
 			insideItems[index1] = insideItems[index2];
 			insideItems[index2] = temp;
 
 			state.insideItems = [...insideItems];
 		},
+		clearConstructor: () => initialState,
 	},
 });
 
-export const { setBun, addInsideIngredient, removeInsideIngredient, swapInsideIngredients } = burgerConstructorSlice.actions;
+export const { setBun, addInsideIngredient, removeInsideIngredient, swapInsideIngredients, clearConstructor } = burgerConstructorSlice.actions;
 
 export default burgerConstructorSlice.reducer;

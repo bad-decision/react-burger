@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { api } from "./services/api/api";
-import burgerConstructorSlice from "./services/reducers/burger-constructor-slice";
-import burgerIngredientsSlice from "./services/reducers/ingredients-slice";
+import { api } from "./api/api";
+import burgerConstructorSlice from "./reducers/burger-constructor-slice";
+import burgerIngredientsSlice from "./reducers/ingredients-slice";
 
 const store = configureStore({
 	reducer: {
