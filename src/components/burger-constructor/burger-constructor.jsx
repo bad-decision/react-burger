@@ -1,108 +1,132 @@
-import {
-	ConstructorElement,
-	DragIcon,
-	CurrencyIcon,
-	Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
+
 import styles from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import { BurgerConstructorContext } from "../../services/burger-constructor-context";
+import Spinner from "../spinner/spinner";
+import InsideIngredient from "./components/inside-ingredient/inside-ingredient";
+import ConstructorBun from "./components/constructor-bun/constructor-bun";
+import PriceOrder from "./components/price-order/price-order";
+
+import { useMakeOrderMutation } from "../../services/api/order-api";
+import { ingredientsApi } from "../../services/api/ingredients-api";
+import { BUN } from "../../utils/ingredientTypes";
+import {
+	addInsideIngredient,
+	clearConstructor,
+	removeInsideIngredient,
+	setBun,
+} from "../../services/reducers/burger-constructor-slice";
+import { setHash } from "../../utils/func";
 import ErrorIndicator from "../error-indicator/error-indicator";
-import { OrderContext } from "../../services/order-context";
-import orderService from "../../services/order-service";
 
 const BurgerConstructor = () => {
-	const { bun, insideItems } = useContext(BurgerConstructorContext);
 	const [isOpenModal, setOpenModal] = useState(false);
-	const [hasError, setHasError] = useState(false);
-	const [orderNumber, setOrderNumber] = useState(null);
+	const { bun, insideItems } = useSelector((s) => s.burgerConstructor);
+	const { data: ingredients } =
+		ingredientsApi.endpoints.getIngredients.useQueryState();
+	const dispatch = useDispatch();
 
-	const closeModal = () => {
+	const [
+		makeOrder,
+		{
+			error: makeOrderError,
+			data: orderNumber,
+			isLoading: makeOrderLoading,
+		},
+	] = useMakeOrderMutation();
+
+	const [{ isConstructorHover }, constructorTarget] = useDrop({
+		accept: "newIngredient",
+		drop(item) {
+			addIngredientDropHandler(item);
+		},
+		collect: (monitor) => ({
+			isConstructorHover: monitor.isOver(),
+		}),
+	});
+
+	const addIngredientDropHandler = (item) => {
+		const ingredient = ingredients.find((x) => x._id === item._id);
+		const { type, _id } = ingredient;
+		const ingredientWithHash = { ...ingredient, _hash: setHash(_id) };
+
+		if (!bun && type !== BUN) return;
+		else if (type === BUN) dispatch(setBun(ingredient));
+		else dispatch(addInsideIngredient(ingredientWithHash));
+	};
+
+	const closeModalHandler = () => {
 		setOpenModal(false);
 	};
 
-	const makeOrder = () => {
-		orderService
-			.setOrder({
-				ingredients: [
-					bun._id,
-					...insideItems.map((x) => x._id),
-					bun._id,
-				],
-			})
-			.then((res) => {
-				setOrderNumber(res.order.number);
+	const makeOrderHandler = () => {
+		setOpenModal(true);
+		makeOrder({
+			ingredients: [bun._id, ...insideItems.map((x) => x._id), bun._id],
+		})
+			.unwrap()
+			.then(() => {
 				setOpenModal(true);
-			})
-			.catch(() => {
-				setHasError(true);
+				dispatch(clearConstructor());
 			});
+	};
+
+	const removeInsideItemHandler = (hash) => {
+		dispatch(removeInsideIngredient(hash));
 	};
 
 	const totalPrice = useMemo(
 		() =>
-			insideItems.reduce((sum, item) => sum + item.price, bun.price * 2),
+			insideItems?.reduce(
+				(sum, item) => sum + item.price,
+				bun?.price * 2
+			),
 		[insideItems, bun]
 	);
 
-	if (hasError) return <ErrorIndicator />;
+	const constructorTargetClass = isConstructorHover
+		? styles.hoveredElements
+		: styles.elements;
+
+	if (makeOrderLoading) return <Spinner />;
+	if (makeOrderError) return <ErrorIndicator />;
 
 	return (
 		<section className={`${styles.section} pt-25 pl-4 pr-4`}>
-			<div className={`${styles.elements} mb-10`}>
-				<div className="pl-8">
-					<ConstructorElement
-						type="top"
-						isLocked
-						text={`${bun.name} (верх)`}
-						price={bun.price}
-						thumbnail={bun.image_mobile}
-					/>
-				</div>
+			<div
+				className={`${constructorTargetClass} mb-10`}
+				ref={constructorTarget}
+			>
+				{bun && <ConstructorBun bun={bun} type="top" />}
 
-				<div className={`${styles.items} custom-scroll`}>
-					{insideItems.map((item) => {
-						return (
-							<div className={styles.item} key={item._id}>
-								<DragIcon type="primary" />
-								<ConstructorElement
-									text={item.name}
-									price={item.price}
-									thumbnail={item.image_mobile}
-								/>
-							</div>
-						);
-					})}
-				</div>
-
-				<div className="pl-8">
-					<ConstructorElement
-						type="bottom"
-						isLocked
-						text={`${bun.name} (низ)`}
-						price={bun.price}
-						thumbnail={bun.image_mobile}
-					/>
-				</div>
+				{insideItems && (
+					<div className={`${styles.items} custom-scroll`}>
+						{insideItems.map((item, index) => (
+							<InsideIngredient
+								ingredient={item}
+								key={item._hash}
+								index={index}
+								handleClose={() =>
+									removeInsideItemHandler(item._hash)
+								}
+							/>
+						))}
+					</div>
+				)}
+				{bun && <ConstructorBun bun={bun} type="bottom" />}
 			</div>
 
-			<div className={styles.order}>
-				<span className="text text_type_digits-medium mr-10">
-					{totalPrice} <CurrencyIcon type="primary" />
-				</span>
+			<PriceOrder onClick={makeOrderHandler} totalPrice={totalPrice} />
 
-				<Button type="primary" size="large" onClick={() => makeOrder()}>
-					Оформить заказ
-				</Button>
-			</div>
-
-			{isOpenModal && (
-				<Modal closeModal={closeModal}>
-					<OrderContext.Provider value={orderNumber}>
-						<OrderDetails />
-					</OrderContext.Provider>
+			{isOpenModal && orderNumber && (
+				<Modal closeModal={closeModalHandler}>
+					<>
+						{makeOrderLoading && <Spinner />}
+						<OrderDetails orderNumber={orderNumber} />
+					</>
 				</Modal>
 			)}
 		</section>

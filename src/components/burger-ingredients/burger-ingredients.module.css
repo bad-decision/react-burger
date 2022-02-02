@@ -1,16 +1,16 @@
 .wrap {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .tab {
-    display: flex;
+	display: flex;
 }
 
 .ingredients {
-    display: flex;
-    max-height: 600px;
-    overflow: auto;
-    flex-direction: column;
-    max-width: 600px;
+	display: flex;
+	max-height: 600px;
+	overflow: auto;
+	flex-direction: column;
+	max-width: 600px;
 }
