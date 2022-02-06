@@ -6,19 +6,16 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
-import { useHistory } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import styles from "./burger-ingredient.module.css";
 import { BurgerIngredientType } from "../../../../utils/types";
-import Modal from "../../../modal/modal";
-import IngredientDetails from "../../../ingredient-details/ingredient-details";
 import { setIngredientDetails } from "../../../../services/reducers/ingredients-slice";
 
 const BurgerIngredient = ({ ingredient }) => {
 	const dispatch = useDispatch();
-	//const history = useHistory();
+	const location = useLocation();
 	const [count, setCount] = useState(null);
-	const [isOpenModal, setOpenModal] = useState(false);
 	const { _id, name, price, image } = ingredient;
 
 	const { bun, insideItems } = useSelector((s) => s.burgerConstructor);
@@ -36,22 +33,23 @@ const BurgerIngredient = ({ ingredient }) => {
 		}),
 	});
 
-	const closeModalHandler = () => {
-		setOpenModal(false);
-		dispatch(setIngredientDetails(null));
-	};
-
 	const openModalHandler = () => {
-		setOpenModal(true);
-		//history.replace({ pathname: '/list' });
 		dispatch(setIngredientDetails(ingredient));
 	};
 
 	const wrapClass = isDrag ? styles.draggingIngredient : styles.ingredient;
 
 	return (
-		<>
-			<div className={wrapClass} onClick={openModalHandler} ref={dragRef}>
+		<div className={wrapClass} ref={dragRef}>
+			<Link
+				key={_id}
+				to={{
+					pathname: `/ingredients/${_id}`,
+					state: { background: location },
+				}}
+				onClick={openModalHandler}
+				className={styles.link}
+			>
 				{count > 0 && <Counter count={count} size="default" />}
 				<img src={image} className="ml-4 mr-4" alt={name} />
 
@@ -62,17 +60,8 @@ const BurgerIngredient = ({ ingredient }) => {
 					<CurrencyIcon type="primary" />
 				</p>
 				<p className="text text_type_main-default">{name}</p>
-			</div>
-
-			{isOpenModal && (
-				<Modal
-					closeModal={closeModalHandler}
-					header="Детали ингредиента"
-				>
-					<IngredientDetails />
-				</Modal>
-			)}
-		</>
+			</Link>
+		</div>
 	);
 };
 

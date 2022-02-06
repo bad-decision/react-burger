@@ -23,13 +23,15 @@ const ForgotPasswordPage = () => {
 
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
-		resetPasswordQuery({ email }).then((res) => {
-			if (res.error) setErrorReset(res.error.data.message);
-			else {
-				dispatch(forgotPassword());
-				history.push(RESET_PASSWORD_URL);
-			}
-		});
+		resetPasswordQuery({ email })
+			.then((res) => {
+				if (res.error) setErrorReset(res.error.data.message);
+				else {
+					dispatch(forgotPassword());
+					history.push(RESET_PASSWORD_URL);
+				}
+			})
+			.catch();
 	};
 
 	return (

@@ -30,15 +30,17 @@ const LoginPage = () => {
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
 
-		loginQuery({ email, password }).then((res) => {
-			if (res.error) setErrorLogIn(res.error.data.message);
-			else {
-				const { user, accessToken, refreshToken } = res.data;
-				dispatch(logInUser(user));
-				setAccessToken(accessToken);
-				setRefreshToken(refreshToken);
-			}
-		});
+		loginQuery({ email, password })
+			.then((res) => {
+				if (res.error) setErrorLogIn(res.error.data.message);
+				else {
+					const { user, accessToken, refreshToken } = res.data;
+					dispatch(logInUser(user));
+					setAccessToken(accessToken);
+					setRefreshToken(refreshToken);
+				}
+			})
+			.catch();
 	};
 
 	if (user || getAccessToken()) {

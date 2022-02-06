@@ -8,7 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { useRegisterMutation } from "../../../services/api/auth-api";
 import { registerUser } from "../../../services/reducers/auth-slice";
-import { getAccessToken, setAccessToken, setRefreshToken } from "../../../utils/func";
+import {
+	getAccessToken,
+	setAccessToken,
+	setRefreshToken,
+} from "../../../utils/func";
 import { LOGIN_URL } from "../../../utils/url";
 import styles from "./register-page.module.css";
 
@@ -27,16 +31,18 @@ const RegisterPage = () => {
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
 
-		registerQuery({ name, email, password }).then((res) => {
-			if (res.error) setErrorRegister(res.error.data.message);
-			else {
-				const { user, accessToken, refreshToken } = res.data;
-				dispatch(registerUser(user));
-				setAccessToken(accessToken);
-				setRefreshToken(refreshToken);
-				history.push("/");
-			}
-		});
+		registerQuery({ name, email, password })
+			.then((res) => {
+				if (res.error) setErrorRegister(res.error.data.message);
+				else {
+					const { user, accessToken, refreshToken } = res.data;
+					dispatch(registerUser(user));
+					setAccessToken(accessToken);
+					setRefreshToken(refreshToken);
+					history.push("/");
+				}
+			})
+			.catch();
 	};
 
 	return (

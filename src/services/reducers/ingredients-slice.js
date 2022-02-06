@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-	setIngredientDetails: null
+	ingredientDetails: null
 };
 
 export const burgerIngredientsSlice = createSlice({
@@ -9,7 +9,7 @@ export const burgerIngredientsSlice = createSlice({
 	initialState,
 	reducers: {
 		setIngredientDetails: (state, action) => {
-			state.modalIngredient = action.payload;
+			state.ingredientDetails = action.payload;
 		}
 	},
 });

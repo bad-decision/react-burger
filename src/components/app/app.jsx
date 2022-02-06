@@ -1,6 +1,8 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { setIngredientDetails } from "../../services/reducers/ingredients-slice";
 import {
 	CONSTRUCTOR_URL,
 	FORGOT_PASSWORD_URL,
@@ -13,6 +15,8 @@ import {
 
 import AppHeader from "../app-header/app-header";
 import ErrorBoundary from "../error-boundary/error-boundary";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
 import ForgotPasswordPage from "../pages/forgot-password-page/forgot-password-page";
 import IngredientDetailsPage from "../pages/ingredient-details-page/ingredient-details-page";
 import LoginPage from "../pages/login-page/login-page";
@@ -24,12 +28,23 @@ import ResetPasswordPage from "../pages/reset-password-page/reset-password-page"
 import ProtectedRoute from "../protected-route/protected-route";
 
 const App = () => {
+	const dispatch = useDispatch();
+	const location = useLocation();
+	const history = useHistory();
+
+	let background = location.state && location.state.background;
+
+	const handleModalClose = () => {
+		dispatch(setIngredientDetails(null));
+		history.goBack();
+	};
+
 	return (
-		<Router>
+		<>
 			<AppHeader />
 			<ErrorBoundary>
 				<DndProvider backend={HTML5Backend}>
-					<Switch>
+					<Switch location={background || location}>
 						<Route path={CONSTRUCTOR_URL} exact={true}>
 							<MainPage />
 						</Route>
@@ -55,9 +70,23 @@ const App = () => {
 							<NoFoundPage />
 						</Route>
 					</Switch>
+
+					{background && (
+						<Route
+							path={INGREDIENT_DETAIL_URL}
+							children={
+								<Modal
+									closeModal={handleModalClose}
+									header="Детали ингредиента"
+								>
+									<IngredientDetails />
+								</Modal>
+							}
+						/>
+					)}
 				</DndProvider>
 			</ErrorBoundary>
-		</Router>
+		</>
 	);
 };
 

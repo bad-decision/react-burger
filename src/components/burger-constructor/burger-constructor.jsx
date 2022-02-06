@@ -77,10 +77,12 @@ const BurgerConstructor = () => {
 					...insideItems.map((x) => x._id),
 					bun._id,
 				],
-			}).then(() => {
-				setOpenModal(true);
-				dispatch(clearConstructor());
-			});
+			})
+				.then(() => {
+					setOpenModal(true);
+					dispatch(clearConstructor());
+				})
+				.catch();
 		}
 	};
 

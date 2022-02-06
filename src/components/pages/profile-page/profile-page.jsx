@@ -25,12 +25,14 @@ const ProfilePage = () => {
 	const logOutHandler = (e) => {
 		e.preventDefault();
 		const payload = { token: getRefreshToken() };
-		logOutQuery(payload).then((res) => {
-			removeAccessToken();
-			removeRefreshToken();
-			dispatch(logOutUser());
-			history.push(LOGIN_URL);
-		});
+		logOutQuery(payload)
+			.then((res) => {
+				removeAccessToken();
+				removeRefreshToken();
+				dispatch(logOutUser());
+				history.push(LOGIN_URL);
+			})
+			.catch();
 	};
 
 	return (

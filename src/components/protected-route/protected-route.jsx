@@ -1,8 +1,10 @@
 import { Route, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+
 import { useGetUserQuery } from "../../services/api/auth-api";
 import { getUser } from "../../services/reducers/auth-slice";
-import { useEffect } from "react";
 import { LOGIN_URL } from "../../utils/url";
 import { getAccessToken } from "../../utils/func";
 
@@ -40,6 +42,10 @@ const ProtectedRoute = ({ children, ...rest }) => {
 			}
 		/>
 	);
+};
+
+ProtectedRoute.propTypes = {
+	children: PropTypes.element.isRequired
 };
 
 export default ProtectedRoute;

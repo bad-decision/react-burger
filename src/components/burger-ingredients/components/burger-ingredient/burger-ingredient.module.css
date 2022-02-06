@@ -13,3 +13,8 @@
 	composes: ingredient;
 	opacity: 0.5;
 }
+
+.link {
+	text-decoration: none;
+	color: white;
+}

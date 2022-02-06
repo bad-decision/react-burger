@@ -10,12 +10,14 @@ import { getUser } from "../../services/reducers/auth-slice";
 import styles from "./profile.module.css";
 
 const Profile = () => {
+	const initPassword = "";
 	const dispatch = useDispatch();
 	const { user } = useSelector((s) => s.auth);
-	const [formPassword, setFormPassword] = useState("");
+	const [formPassword, setFormPassword] = useState(initPassword);
 	const [formName, setFormName] = useState("");
 	const [formEmail, setFormEmail] = useState("");
 	const [updateMsg, setUpdateMsg] = useState(null);
+	const [isChanged, setIsChanged] = useState(false);
 
 	const [updateUser] = useUpdateUserMutation();
 
@@ -29,6 +31,21 @@ const Profile = () => {
 		}
 	}, [user]);
 
+	useEffect(() => {
+		if (user) {
+			setIsChanged(
+				formName !== user.name ||
+					formEmail !== user.email ||
+					formPassword !== initPassword
+			);
+		}
+	}, [
+		formName,
+		formEmail,
+		formPassword,
+		user
+	]);
+
 	const onIconClick = (ref) => {
 		ref.current.focus();
 	};
@@ -40,20 +57,23 @@ const Profile = () => {
 			email: formEmail,
 			password: formPassword,
 		};
-		updateUser(options).then((res) => {
-			if (res.data?.success) {
-				dispatch(getUser(res.data.user));
-				setUpdateMsg("Данные успешно обновлены");
-				setFormPassword("");
-			} else setUpdateMsg("Данные успешно не обновлены");
-		});
+		updateUser(options)
+			.then((res) => {
+				if (res.data?.success) {
+					dispatch(getUser(res.data.user));
+					setUpdateMsg("Данные успешно обновлены");
+					setFormPassword("");
+				} else setUpdateMsg("Данные успешно не обновлены");
+			})
+			.catch();
 	};
 
 	const resetProfile = (e) => {
 		e.preventDefault();
-		setFormPassword("");
+		setFormPassword(initPassword);
 		setFormName(user.name);
 		setFormEmail(user.email);
+		setIsChanged(false);
 	};
 
 	return (
@@ -101,18 +121,20 @@ const Profile = () => {
 
 				{updateMsg && <span>{updateMsg}</span>}
 
-				<div className={styles.buttons}>
-					<Button
-						type="secondary"
-						size="medium"
-						onClick={(e) => resetProfile(e)}
-					>
-						Отменить
-					</Button>
-					<Button type="primary" size="medium">
-						Сохранить
-					</Button>
-				</div>
+				{isChanged && (
+					<div className={styles.buttons}>
+						<Button
+							type="secondary"
+							size="medium"
+							onClick={(e) => resetProfile(e)}
+						>
+							Отменить
+						</Button>
+						<Button type="primary" size="medium">
+							Сохранить
+						</Button>
+					</div>
+				)}
 			</form>
 		)
 	);

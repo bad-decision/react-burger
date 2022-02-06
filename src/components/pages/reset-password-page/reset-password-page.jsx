@@ -33,13 +33,15 @@ const ResetPasswordPage = () => {
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
 
-		resetPasswordQuery({ password, token: emailCode }).then((res) => {
-			if (res.error) setErrorReset(res.error.data.message);
-			else {
-				dispatch(resetPassword());
-				history.push(LOGIN_URL);
-			}
-		});
+		resetPasswordQuery({ password, token: emailCode })
+			.then((res) => {
+				if (res.error) setErrorReset(res.error.data.message);
+				else {
+					dispatch(resetPassword());
+					history.push(LOGIN_URL);
+				}
+			})
+			.catch();
 	};
 
 	return (
