@@ -16,21 +16,15 @@
 }
 
 .link {
+	display: flex;
 	text-decoration: none;
 }
 
-.constructor {
-	display: flex;
-	color: #fff;
-	composes: link;
+.activeLink span {
+	color: white !important;
 }
 
-.orders {
-	display: flex;
-	composes: link;
-}
-
-.lk {
+.profile {
 	display: flex;
 	justify-content: flex-end;
 	composes: link;

@@ -3,7 +3,12 @@ import Value from "./components/value/value";
 import styles from "./ingredient-details.module.css";
 
 const IngredientDetails = () => {
-	const { modalIngredient } = useSelector((store) => store.burgerIngredients);
+	const { ingredientDetails } = useSelector(
+		(store) => store.burgerIngredients
+	);
+
+	if (!ingredientDetails) return null;
+
 	const {
 		image_large: imageLarge,
 		name,
@@ -11,7 +16,7 @@ const IngredientDetails = () => {
 		proteins,
 		fat,
 		carbohydrates,
-	} = modalIngredient;
+	} = ingredientDetails;
 
 	return (
 		<div className={`${styles.wrap}`}>

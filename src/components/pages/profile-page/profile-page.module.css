@@ -1,0 +1,31 @@
+.container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	margin-top: 150px;
+}
+
+.linksArea {
+	display: flex;
+    justify-content: flex-end;
+}
+
+.linksWrap {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 320px;
+}
+
+.navLink {
+	text-decoration: none;
+}
+
+.activeLink {
+	text-decoration: none;
+	color: white;
+}
+
+.logOutLink {
+	cursor: pointer;
+	text-decoration: none;
+}

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { useDrop } from "react-dnd";
 
 import styles from "./burger-constructor.module.css";
@@ -21,12 +22,16 @@ import {
 } from "../../services/reducers/burger-constructor-slice";
 import { setHash } from "../../utils/func";
 import ErrorIndicator from "../error-indicator/error-indicator";
+import { LOGIN_URL } from "../../utils/url";
 
 const BurgerConstructor = () => {
 	const [isOpenModal, setOpenModal] = useState(false);
 	const { bun, insideItems } = useSelector((s) => s.burgerConstructor);
 	const { data: ingredients } =
 		ingredientsApi.endpoints.getIngredients.useQueryState();
+	const { user } = useSelector((s) => s.auth);
+	const history = useHistory();
+
 	const dispatch = useDispatch();
 
 	const [
@@ -63,15 +68,20 @@ const BurgerConstructor = () => {
 	};
 
 	const makeOrderHandler = () => {
-		setOpenModal(true);
-		makeOrder({
-			ingredients: [bun._id, ...insideItems.map((x) => x._id), bun._id],
-		})
-			.unwrap()
-			.then(() => {
+		if (!user) history.push(LOGIN_URL);
+		else {
+			setOpenModal(true);
+			makeOrder({
+				ingredients: [
+					bun._id,
+					...insideItems.map((x) => x._id),
+					bun._id,
+				],
+			}).then(() => {
 				setOpenModal(true);
 				dispatch(clearConstructor());
 			});
+		}
 	};
 
 	const removeInsideItemHandler = (hash) => {

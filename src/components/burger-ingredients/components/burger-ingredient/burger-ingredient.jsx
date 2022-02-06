@@ -6,15 +6,17 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
+import { useHistory } from "react-router-dom";
 
 import styles from "./burger-ingredient.module.css";
 import { BurgerIngredientType } from "../../../../utils/types";
 import Modal from "../../../modal/modal";
 import IngredientDetails from "../../../ingredient-details/ingredient-details";
-import { setModalIngredient } from "../../../../services/reducers/ingredients-slice";
+import { setIngredientDetails } from "../../../../services/reducers/ingredients-slice";
 
 const BurgerIngredient = ({ ingredient }) => {
 	const dispatch = useDispatch();
+	//const history = useHistory();
 	const [count, setCount] = useState(null);
 	const [isOpenModal, setOpenModal] = useState(false);
 	const { _id, name, price, image } = ingredient;
@@ -36,12 +38,13 @@ const BurgerIngredient = ({ ingredient }) => {
 
 	const closeModalHandler = () => {
 		setOpenModal(false);
-		dispatch(setModalIngredient(null));
+		dispatch(setIngredientDetails(null));
 	};
 
 	const openModalHandler = () => {
 		setOpenModal(true);
-		dispatch(setModalIngredient(ingredient));
+		//history.replace({ pathname: '/list' });
+		dispatch(setIngredientDetails(ingredient));
 	};
 
 	const wrapClass = isDrag ? styles.draggingIngredient : styles.ingredient;

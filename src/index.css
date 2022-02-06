@@ -103,7 +103,7 @@
 	position: relative;
 	transform: translateZ(0) scale(0.71);
 	backface-visibility: hidden;
-	transform-origin: 0 0; /* see note above */
+	transform-origin: 0 0;
 }
 .ldio-h1hib9sk6kb div {
 	box-sizing: content-box;

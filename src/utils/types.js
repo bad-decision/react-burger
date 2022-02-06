@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { BUN } from './ingredientTypes';
 
 const DefaultIngredientType = {
 	name: PropTypes.string.isRequired,
