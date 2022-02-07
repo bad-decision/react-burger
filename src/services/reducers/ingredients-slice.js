@@ -1,19 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-	modalIngredient: null
+	ingredientDetails: null
 };
 
 export const burgerIngredientsSlice = createSlice({
 	name: "burgerIngredients",
 	initialState,
 	reducers: {
-		setModalIngredient: (state, action) => {
-			state.modalIngredient = action.payload;
+		setIngredientDetails: (state, action) => {
+			state.ingredientDetails = action.payload;
 		}
 	},
 });
 
-export const { setModalIngredient } = burgerIngredientsSlice.actions;
+export const { setIngredientDetails } = burgerIngredientsSlice.actions;
 
 export default burgerIngredientsSlice.reducer;

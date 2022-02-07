@@ -1,9 +1,32 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useGetIngredientsQuery } from "../../services/api/ingredients-api";
+import { setIngredientDetails } from "../../services/reducers/ingredients-slice";
+import ErrorIndicator from "../error-indicator/error-indicator";
+import Spinner from "../spinner/spinner";
 import Value from "./components/value/value";
 import styles from "./ingredient-details.module.css";
 
 const IngredientDetails = () => {
-	const { modalIngredient } = useSelector((store) => store.burgerIngredients);
+	const dispatch = useDispatch();
+	const { id } = useParams();
+
+	const { data: ingredients, error, isLoading } = useGetIngredientsQuery();
+
+	useEffect(() => {
+		const ingredient = ingredients?.find((x) => x._id === id);
+		if (ingredient) dispatch(setIngredientDetails(ingredient));
+	}, [ingredients, id, dispatch]);
+
+	const { ingredientDetails } = useSelector(
+		(store) => store.burgerIngredients
+	);
+
+	if (error) return <ErrorIndicator />;
+	if (isLoading) return <Spinner />;
+	if (!ingredientDetails) return null;
+
 	const {
 		image_large: imageLarge,
 		name,
@@ -11,7 +34,7 @@ const IngredientDetails = () => {
 		proteins,
 		fat,
 		carbohydrates,
-	} = modalIngredient;
+	} = ingredientDetails;
 
 	return (
 		<div className={`${styles.wrap}`}>

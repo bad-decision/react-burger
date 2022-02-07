@@ -5,36 +5,59 @@ import {
 	ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
+import { NavLink, useLocation, useRouteMatch } from "react-router-dom";
+import { PROFILE_URL } from "../../utils/url";
 
 const AppHeader = () => {
+	const { pathname } = useLocation();
+	const profileMatch = useRouteMatch(PROFILE_URL);
+
 	return (
 		<header className={`${styles.header} pt-4 pb-4`}>
 			<nav className={styles.nav}>
-				<a className={`${styles.constructor} p-5 mr-2`} href="/">
-					<BurgerIcon type="primary" />
-					<span className="text text_type_main-default ml-2">
+				<NavLink
+					className={`${styles.link} p-5 mr-2`}
+					to="/"
+					activeClassName={styles.activeLink}
+					exact={true}
+				>
+					<BurgerIcon
+						type={pathname === "/" ? "primary" : "secondary"}
+					/>
+					<span className="text text_type_main-default text_color_inactive ml-2">
 						Конструктор
 					</span>
-				</a>
+				</NavLink>
 
-				<a className={`${styles.orders} p-5`} href="/">
-					<ListIcon type="secondary" />
+				<NavLink
+					className={`${styles.link} p-5`}
+					to="/orders"
+					exact={true}
+					activeClassName={styles.activeLink}
+				>
+					<ListIcon
+						type={pathname === "/orders" ? "primary" : "secondary"}
+					/>
 					<span className="text text_type_main-default text_color_inactive ml-2">
 						Лента заказов
 					</span>
-				</a>
+				</NavLink>
 			</nav>
 
 			<div className={styles.logo}>
 				<Logo />
 			</div>
 
-			<a className={`${styles.lk} p-5`} href="/">
-				<ProfileIcon type="secondary" />
+			<NavLink
+				className={`${styles.profile} p-5`}
+				to={PROFILE_URL}
+				activeClassName={styles.activeLink}
+			>
+				<ProfileIcon type={profileMatch ? "primary" : "secondary"} />
 				<span className="text text_type_main-default text_color_inactive ml-2">
 					Личный кабинет
 				</span>
-			</a>
+			</NavLink>
 		</header>
 	);
 };
