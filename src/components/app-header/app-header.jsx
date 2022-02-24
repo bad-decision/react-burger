@@ -1,65 +1,61 @@
+import { NavLink, useLocation, useRouteMatch } from 'react-router-dom';
 import {
-	Logo,
-	BurgerIcon,
-	ListIcon,
-	ProfileIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./app-header.module.css";
-import { NavLink, useLocation, useRouteMatch } from "react-router-dom";
-import { PROFILE_URL } from "../../utils/url";
+  Logo,
+  BurgerIcon,
+  ListIcon,
+  ProfileIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './app-header.module.css';
+import { PROFILE_URL } from '../../utils/url';
 
-const AppHeader = () => {
-	const { pathname } = useLocation();
-	const profileMatch = useRouteMatch(PROFILE_URL);
+function AppHeader() {
+  const { pathname } = useLocation();
+  const profileMatch = useRouteMatch(PROFILE_URL);
 
-	return (
-		<header className={`${styles.header} pt-4 pb-4`}>
-			<nav className={styles.nav}>
-				<NavLink
-					className={`${styles.link} p-5 mr-2`}
-					to="/"
-					activeClassName={styles.activeLink}
-					exact={true}
-				>
-					<BurgerIcon
-						type={pathname === "/" ? "primary" : "secondary"}
-					/>
-					<span className="text text_type_main-default text_color_inactive ml-2">
-						Конструктор
-					</span>
-				</NavLink>
+  return (
+    <header className={`${styles.header} pt-4 pb-4`}>
+      <nav className={styles.nav}>
+        <NavLink
+          className={`${styles.link} p-5 mr-2`}
+          to="/"
+          activeClassName={styles.activeLink}
+          exact
+        >
+          <BurgerIcon type={pathname === '/' ? 'primary' : 'secondary'} />
+          <span className="text text_type_main-default text_color_inactive ml-2">
+            Конструктор
+          </span>
+        </NavLink>
 
-				<NavLink
-					className={`${styles.link} p-5`}
-					to="/orders"
-					exact={true}
-					activeClassName={styles.activeLink}
-				>
-					<ListIcon
-						type={pathname === "/orders" ? "primary" : "secondary"}
-					/>
-					<span className="text text_type_main-default text_color_inactive ml-2">
-						Лента заказов
-					</span>
-				</NavLink>
-			</nav>
+        <NavLink
+          className={`${styles.link} p-5`}
+          to="/orders"
+          exact
+          activeClassName={styles.activeLink}
+        >
+          <ListIcon type={pathname === '/orders' ? 'primary' : 'secondary'} />
+          <span className="text text_type_main-default text_color_inactive ml-2">
+            Лента заказов
+          </span>
+        </NavLink>
+      </nav>
 
-			<div className={styles.logo}>
-				<Logo />
-			</div>
+      <div className={styles.logo}>
+        <Logo />
+      </div>
 
-			<NavLink
-				className={`${styles.profile} p-5`}
-				to={PROFILE_URL}
-				activeClassName={styles.activeLink}
-			>
-				<ProfileIcon type={profileMatch ? "primary" : "secondary"} />
-				<span className="text text_type_main-default text_color_inactive ml-2">
-					Личный кабинет
-				</span>
-			</NavLink>
-		</header>
-	);
-};
+      <NavLink
+        className={`${styles.profile} p-5`}
+        to={PROFILE_URL}
+        activeClassName={styles.activeLink}
+      >
+        <ProfileIcon type={profileMatch ? 'primary' : 'secondary'} />
+        <span className="text text_type_main-default text_color_inactive ml-2">
+          Личный кабинет
+        </span>
+      </NavLink>
+    </header>
+  );
+}
 
 export default AppHeader;
