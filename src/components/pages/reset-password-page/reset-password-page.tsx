@@ -14,9 +14,8 @@ import styles from './reset-password-page.module.css';
 function ResetPasswordPage() {
   const [emailCode, setEmailCode] = useState('');
   const [password, setPassword] = useState('');
-  const [errorReset, setErrorReset] = useState(null);
 
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const { user, forgotPassword } = useAppSelector((s) => s.auth);
 
   const dispatch = useAppDispatch();
@@ -36,12 +35,9 @@ function ResetPasswordPage() {
     e.preventDefault();
 
     resetPasswordQuery({ password, token: emailCode })
-      .then((res) => {
-        if (res.error) setErrorReset(res.error.data.message);
-        else {
-          dispatch(resetPassword());
-          history.push(LOGIN_URL);
-        }
+      .then(() => {
+        dispatch(resetPassword());
+        history.push(LOGIN_URL);
       })
       .catch();
   };
@@ -76,8 +72,6 @@ function ResetPasswordPage() {
           errorText="Ошибка"
         />
       </div>
-
-      {errorReset && <span className={styles.errorMsg}>{errorReset}</span>}
 
       <div className="mt-6 mb-20">
         <Button type="primary" size="medium">

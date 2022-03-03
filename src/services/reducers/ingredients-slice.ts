@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IBurgerIngredient, IIngredientDetails } from '../types';
+import {
+  IBurgerIngredient as IBurgerIngredientState,
+  IIngredientDetails,
+} from '../../utils/types';
 
-const initialState: IBurgerIngredient = {
+const initialState: IBurgerIngredientState = {
   ingredientDetails: null,
 };
 

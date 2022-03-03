@@ -13,6 +13,7 @@ import {
   setAccessToken,
   setRefreshToken,
 } from '../../utils/func';
+import { IAuthResponse, IResponse } from '../../utils/types';
 import { logOutUser } from '../reducers/auth-slice';
 
 export const API_BASE = 'https://norma.nomoreparties.space/api';
@@ -40,7 +41,7 @@ const baseQueryWithReauth: BaseQueryFn<
   if (result.error && result.error.status === 403) {
     removeAccessToken();
 
-    const refreshResult = await baseQuery(
+    const refreshResult = (await baseQuery(
       {
         url: 'auth/token',
         method: 'POST',
@@ -48,7 +49,7 @@ const baseQueryWithReauth: BaseQueryFn<
       },
       api,
       extraOptions
-    );
+    )) as IResponse<IAuthResponse>;
 
     if (refreshResult.data) {
       setAccessToken(refreshResult.data.accessToken);

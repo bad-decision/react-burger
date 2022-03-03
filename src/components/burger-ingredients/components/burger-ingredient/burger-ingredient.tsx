@@ -3,14 +3,12 @@ import {
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 
 import styles from './burger-ingredient.module.css';
-import { BurgerIngredientType } from '../../../../utils/types';
 import { setIngredientDetails } from '../../../../services/reducers/ingredients-slice';
-import { IIngredientDetails } from '../../../../services/types';
+import { IIngredientDetails } from '../../../../utils/types';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
 
 interface IProps {
@@ -69,9 +67,5 @@ function BurgerIngredient({ ingredient }: IProps) {
     </div>
   );
 }
-
-BurgerIngredient.propTypes = {
-  ingredient: PropTypes.shape(BurgerIngredientType).isRequired,
-};
 
 export default BurgerIngredient;

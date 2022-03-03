@@ -22,7 +22,6 @@ function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorRegister, setErrorRegister] = useState(null);
   const { user } = useAppSelector((s) => s.auth);
   const [registerQuery] = useRegisterMutation();
 
@@ -33,8 +32,7 @@ function RegisterPage() {
 
     registerQuery({ name, email, password })
       .then((res) => {
-        if (res.error) setErrorRegister(res.error.data.message);
-        else {
+        if ('data' in res) {
           const { user: resUser, accessToken, refreshToken } = res.data;
           dispatch(registerUser(resUser));
           setAccessToken(accessToken);
@@ -78,10 +76,6 @@ function RegisterPage() {
         value={password}
         name="password"
       />
-
-      {errorRegister && (
-        <span className={styles.errorMsg}>{errorRegister}</span>
-      )}
 
       <div className="mt-6 mb-20">
         <Button type="primary" size="medium">

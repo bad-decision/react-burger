@@ -13,7 +13,6 @@ import React, {
 import { useUpdateUserMutation } from '../../services/api/auth-api';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
 import { getUser } from '../../services/reducers/auth-slice';
-import { IHasUser } from '../../services/types';
 import styles from './profile.module.css';
 
 function Profile() {
@@ -28,8 +27,8 @@ function Profile() {
 
   const [updateUser] = useUpdateUserMutation();
 
-  const passwordRef = useRef(null);
-  const nameRef = useRef(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (user) {
@@ -63,12 +62,14 @@ function Profile() {
     };
     updateUser(options)
       .then((res) => {
-        const data: IHasUser = res.data;
-        if (data.success && data.user) {
-          dispatch(getUser(data.user));
-          setUpdateMsg('Данные успешно обновлены');
-          setFormPassword('');
-        } else setUpdateMsg('Данные успешно не обновлены');
+        if ('data' in res) {
+          const data = res.data;
+          if (data && data.user) {
+            dispatch(getUser(data.user));
+            setUpdateMsg('Данные успешно обновлены');
+            setFormPassword('');
+          } else setUpdateMsg('Данные успешно не обновлены');
+        }
       })
       .catch();
   };

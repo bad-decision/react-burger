@@ -1,7 +1,5 @@
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import { IIngredientDetails } from '../../../../services/types';
-import { ConstructorBunType } from '../../../../utils/types';
+import { IIngredientDetails } from '../../../../utils/types';
 
 interface IProps {
   bun: IIngredientDetails;
@@ -24,10 +22,5 @@ function ConstructorBun({ bun, type }: IProps) {
     </div>
   );
 }
-
-ConstructorBun.propTypes = {
-  bun: PropTypes.shape(ConstructorBunType).isRequired,
-  type: PropTypes.string.isRequired,
-};
 
 export default ConstructorBun;

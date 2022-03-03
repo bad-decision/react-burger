@@ -31,10 +31,12 @@ function LoginPage() {
 
     loginQuery({ email, password })
       .then((res) => {
-        const { user: resUser, accessToken, refreshToken } = res.data;
-        dispatch(logInUser(resUser));
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
+        if ('data' in res) {
+          const { user: resUser, accessToken, refreshToken } = res.data;
+          dispatch(logInUser(resUser));
+          setAccessToken(accessToken);
+          setRefreshToken(refreshToken);
+        }
       })
       .catch();
   };

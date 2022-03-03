@@ -1,4 +1,4 @@
-import { IIngredientDetails, IResponse } from '../types';
+import { IIngredientDetails, IResponse } from '../../utils/types';
 import { api } from './api';
 
 export const ingredientsApi = api.injectEndpoints({

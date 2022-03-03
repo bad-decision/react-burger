@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IBurgerConstructorState, IIngredientDetails } from '../types';
+import { IBurgerConstructorState, IIngredientDetails } from '../../utils/types';
 
 const initialState: IBurgerConstructorState = {
   bun: null,

@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 
 import styles from './inside-ingredient.module.css';
 import { swapInsideIngredients } from '../../../../services/reducers/burger-constructor-slice';
-import { IIngredientDetails } from '../../../../services/types';
+import { IIngredientDetails } from '../../../../utils/types';
 
 interface IProps {
   ingredient: IIngredientDetails;

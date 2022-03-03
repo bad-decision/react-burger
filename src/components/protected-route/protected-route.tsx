@@ -8,12 +8,12 @@ import { LOGIN_URL } from '../../utils/url';
 import { getAccessToken } from '../../utils/func';
 import { useAppSelector } from '../../services/hooks';
 
-type Props = {
+interface IProps {
   children: React.ReactNode;
   path: string;
-};
+}
 
-function ProtectedRoute({ children, ...rest }: Props) {
+function ProtectedRoute({ children, ...rest }: IProps) {
   const dispatch = useDispatch();
   const { user } = useAppSelector((s) => s.auth);
   const accessToken = getAccessToken();

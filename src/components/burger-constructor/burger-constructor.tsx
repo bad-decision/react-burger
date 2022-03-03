@@ -23,7 +23,7 @@ import { getAccessToken, setHash } from '../../utils/func';
 import ErrorIndicator from '../error-indicator/error-indicator';
 import { LOGIN_URL } from '../../utils/url';
 import { useAppDispatch, useAppSelector } from '../../services/hooks';
-import { IIngredientDetails } from '../../services/types';
+import { IIngredientDetails } from '../../utils/types';
 
 function BurgerConstructor() {
   const [isOpenModal, setOpenModal] = useState(false);
