@@ -1,4 +1,4 @@
-import { NavLink, useLocation, useRouteMatch } from 'react-router-dom';
+import { Link, NavLink, useLocation, useRouteMatch } from 'react-router-dom';
 import {
   Logo,
   BurgerIcon,
@@ -6,7 +6,7 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-import { PROFILE_URL } from '../../utils/url';
+import { CONSTRUCTOR_URL, PROFILE_URL } from '../../utils/url';
 
 function AppHeader() {
   const { pathname } = useLocation();
@@ -40,9 +40,9 @@ function AppHeader() {
         </NavLink>
       </nav>
 
-      <div className={styles.logo}>
+      <Link className={styles.logo} to={CONSTRUCTOR_URL}>
         <Logo />
-      </div>
+      </Link>
 
       <NavLink
         className={`${styles.profile} p-5`}

@@ -4,11 +4,11 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 
 import styles from './inside-ingredient.module.css';
 import { swapInsideIngredients } from '../../../../services/reducers/burger-constructor-slice';
 import { IIngredientDetails } from '../../../../utils/types';
+import { useAppDispatch } from '../../../../services/hooks';
 
 interface IProps {
   ingredient: IIngredientDetails;
@@ -19,7 +19,7 @@ interface IProps {
 function InsideIngredient({ ingredient, handleClose, index }: IProps) {
   const { _hash: hash, image_mobile: imageMobile, price, name } = ingredient;
   const ref = useRef<HTMLDivElement | null>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const swapIngredients = (index1: number, index2: number) => {
     dispatch(swapInsideIngredients({ index1, index2 }));

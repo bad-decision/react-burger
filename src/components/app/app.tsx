@@ -1,7 +1,7 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useDispatch } from 'react-redux';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { useAppDispatch } from '../../services/hooks';
 import { setIngredientDetails } from '../../services/reducers/ingredients-slice';
 import { ILocationModal } from '../../utils/types';
 import {
@@ -29,7 +29,7 @@ import ResetPasswordPage from '../pages/reset-password-page/reset-password-page'
 import ProtectedRoute from '../protected-route/protected-route';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation<ILocationModal>();
   const history = useHistory();
 
