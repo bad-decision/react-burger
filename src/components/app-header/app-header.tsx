@@ -6,11 +6,12 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-import { CONSTRUCTOR_URL, PROFILE_URL } from '../../utils/url';
+import { CONSTRUCTOR_URL, FEED_URL, PROFILE_URL } from '../../utils/url';
 
 function AppHeader() {
   const { pathname } = useLocation();
   const profileMatch = useRouteMatch(PROFILE_URL);
+  const feedMatch = useRouteMatch(FEED_URL);
 
   return (
     <header className={`${styles.header} pt-4 pb-4`}>
@@ -29,11 +30,10 @@ function AppHeader() {
 
         <NavLink
           className={`${styles.link} p-5`}
-          to="/orders"
-          exact
+          to={FEED_URL}
           activeClassName={styles.activeLink}
         >
-          <ListIcon type={pathname === '/orders' ? 'primary' : 'secondary'} />
+          <ListIcon type={feedMatch ? 'primary' : 'secondary'} />
           <span className="text text_type_main-default text_color_inactive ml-2">
             Лента заказов
           </span>

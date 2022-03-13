@@ -1,3 +1,5 @@
+import { CREATED, DONE, PENDING } from './orderStatuses';
+
 export interface IUser {
   email: string;
   name: string;
@@ -73,4 +75,27 @@ export interface IRegisterQuery {
   name: string;
   email: string;
   password: string;
+}
+
+export type TOrderStatus = typeof DONE | typeof PENDING | typeof CREATED;
+
+export interface IMessage {
+  success: boolean;
+  orders: IOrder[];
+  total: number;
+  totalToday: number;
+}
+
+export interface IOrders {
+  orders: IOrder[];
+}
+
+export interface IOrder {
+  ingredients: string[];
+  _id: string;
+  status: TOrderStatus;
+  number: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
 }
