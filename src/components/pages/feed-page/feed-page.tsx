@@ -1,11 +1,13 @@
 import { useGetLastOrdersQuery } from '../../../services/api/order-api';
+import { useAppSelector } from '../../../services/hooks';
 import { MAX_PENDING_ORDERS, MAX_READY_ORDERS } from '../../../utils/const';
 import { DONE, PENDING } from '../../../utils/orderStatuses';
 import Orders from '../../orders/orders';
 import styles from './feed-page.module.css';
 
 function FeedPage() {
-  const { data: message } = useGetLastOrdersQuery(null);
+  useGetLastOrdersQuery(null);
+  const { message } = useAppSelector((s) => s.feed);
   const { total, totalToday, orders } = message || {};
 
   const readyOrders = orders?.filter((x) => x.status === DONE);

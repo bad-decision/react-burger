@@ -1,7 +1,19 @@
 import { IMessage, IOrder, IOrderResponse, IOrders } from '../../utils/types';
 import { api } from './api';
-import { getClearAccessToken } from '../../utils/func';
+import { getClearAccessToken, wsInit } from '../../utils/func';
 import { ALL_ORDERS_URL, USER_ORDERS_URL } from '../../utils/url';
+import {
+  userOrdersWsClosed,
+  userOrdersWsError,
+  userOrdersWsGetMessage,
+  userOrdersWsOpened,
+} from '../reducers/order-slice';
+import {
+  feedOrdersWsClosed,
+  feedOrdersWsError,
+  feedOrdersWsGetMessage,
+  feedOrdersWsOpened,
+} from '../reducers/feed-slice';
 
 type TMakeOrderBody = {
   ingredients: string[];
@@ -25,16 +37,15 @@ export const orderApi = api.injectEndpoints({
 
     getLastOrders: builder.query<IMessage | undefined, null>({
       queryFn: () => ({ data: undefined }),
-      async onCacheEntryAdded(_arg, { updateCachedData, cacheEntryRemoved }) {
-        const ws = new WebSocket(ALL_ORDERS_URL);
-        const listener = (event: MessageEvent) => {
-          const data = JSON.parse(event.data);
-          updateCachedData(() => {
-            return data;
-          });
-        };
-
-        ws.addEventListener('message', listener);
+      async onCacheEntryAdded(_arg, { dispatch, cacheEntryRemoved }) {
+        const ws = wsInit(
+          ALL_ORDERS_URL,
+          dispatch,
+          feedOrdersWsOpened,
+          feedOrdersWsError,
+          feedOrdersWsClosed,
+          feedOrdersWsGetMessage
+        );
         await cacheEntryRemoved;
         ws.close();
       },
@@ -42,17 +53,17 @@ export const orderApi = api.injectEndpoints({
 
     getUserOrders: builder.query<IMessage | undefined, null>({
       queryFn: () => ({ data: undefined }),
-      async onCacheEntryAdded(_arg, { updateCachedData, cacheEntryRemoved }) {
+      async onCacheEntryAdded(_arg, { dispatch, cacheEntryRemoved }) {
         const token = getClearAccessToken();
-        const ws = new WebSocket(`${USER_ORDERS_URL}?token=${token}`);
-        const listener = (event: MessageEvent) => {
-          const data = JSON.parse(event.data);
-          updateCachedData(() => {
-            return data;
-          });
-        };
+        const ws = wsInit(
+          `${USER_ORDERS_URL}?token=${token}`,
+          dispatch,
+          userOrdersWsOpened,
+          userOrdersWsError,
+          userOrdersWsClosed,
+          userOrdersWsGetMessage
+        );
 
-        ws.addEventListener('message', listener);
         await cacheEntryRemoved;
         ws.close();
       },

@@ -1,4 +1,9 @@
 import {
+  ActionCreatorWithoutPayload,
+  ActionCreatorWithPayload,
+} from '@reduxjs/toolkit';
+import { AppDispatch } from '../services/store';
+import {
   CREATED,
   CREATED_RU,
   DONE,
@@ -6,7 +11,7 @@ import {
   PENDING,
   PENDING_RU,
 } from './orderStatuses';
-import { IIngredientDetails, TOrderStatus } from './types';
+import { IIngredientDetails, IMessage, TOrderStatus } from './types';
 
 export const setHash = (value: string) => `${value}_${new Date().getTime()}`;
 
@@ -63,4 +68,30 @@ export const getOrderStatus = (status: TOrderStatus | undefined) => {
     default:
       break;
   }
+};
+
+export const wsInit = (
+  url: string,
+  dispatch: AppDispatch,
+  onOpen: ActionCreatorWithoutPayload<string>,
+  onError: ActionCreatorWithPayload<Event, string>,
+  onClose: ActionCreatorWithoutPayload<string>,
+  onMessage: ActionCreatorWithPayload<IMessage, string>
+) => {
+  const ws = new WebSocket(url);
+
+  ws.onopen = () => {
+    dispatch(onOpen());
+  };
+  ws.onerror = (event) => {
+    dispatch(onError(event));
+  };
+  ws.onmessage = (event: MessageEvent) => {
+    const data: IMessage = JSON.parse(event.data);
+    dispatch(onMessage(data));
+  };
+  ws.onclose = () => {
+    dispatch(onClose());
+  };
+  return ws;
 };

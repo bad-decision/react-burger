@@ -99,3 +99,9 @@ export interface IOrder {
   createdAt: string;
   updatedAt: string;
 }
+
+export type TWSState = {
+  wsConnected: boolean;
+  message: IMessage | null;
+  error?: Event;
+};

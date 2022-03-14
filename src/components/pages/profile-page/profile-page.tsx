@@ -1,7 +1,7 @@
 import { Link, useHistory, Switch, Route, NavLink } from 'react-router-dom';
 import { useLogoutMutation } from '../../../services/api/auth-api';
 import { useGetUserOrdersQuery } from '../../../services/api/order-api';
-import { useAppDispatch } from '../../../services/hooks';
+import { useAppDispatch, useAppSelector } from '../../../services/hooks';
 import { logOutUser } from '../../../services/reducers/auth-slice';
 import {
   getRefreshToken,
@@ -24,7 +24,8 @@ function ProfilePage() {
   const history = useHistory();
   const [logOutQuery] = useLogoutMutation();
 
-  const { data: message } = useGetUserOrdersQuery(null);
+  useGetUserOrdersQuery(null);
+  const { message } = useAppSelector((s) => s.orders);
 
   const { orders } = message || {};
 
