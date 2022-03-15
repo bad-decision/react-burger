@@ -1,0 +1,7 @@
+.wrap {
+  display: flex;
+  max-height: 740px;
+  overflow: auto;
+  flex-direction: column;
+  gap: 24px;
+}

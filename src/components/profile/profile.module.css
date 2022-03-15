@@ -1,14 +1,15 @@
 .profileWrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 520px;
 }
 
 .logOutLink {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .buttons {
-    display: flex;
-    margin-top: 20px;
+  display: flex;
+  margin-top: 20px;
 }

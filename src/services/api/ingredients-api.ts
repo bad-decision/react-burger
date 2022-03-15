@@ -3,7 +3,7 @@ import { api } from './api';
 
 export const ingredientsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getIngredients: builder.query({
+    getIngredients: builder.query<IIngredientDetails[] | undefined, null>({
       query: () => 'ingredients',
       transformResponse: (response: IResponse<IIngredientDetails[]>) =>
         response.data,

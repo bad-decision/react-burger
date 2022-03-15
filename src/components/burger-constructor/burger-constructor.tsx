@@ -69,14 +69,16 @@ function BurgerConstructor() {
     if (!user && !getAccessToken()) history.push(LOGIN_URL);
     else {
       setOpenModal(true);
-      makeOrder({
-        ingredients: [bun?._id, ...insideItems.map((x) => x._id), bun?._id],
-      })
-        .then(() => {
-          setOpenModal(true);
-          dispatch(clearConstructor());
+      if (bun) {
+        makeOrder({
+          ingredients: [bun._id, ...insideItems.map((x) => x._id), bun._id],
         })
-        .catch();
+          .then(() => {
+            setOpenModal(true);
+            dispatch(clearConstructor());
+          })
+          .catch();
+      }
     }
   };
 

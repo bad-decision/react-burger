@@ -1,7 +1,26 @@
+import {
+  ActionCreatorWithoutPayload,
+  ActionCreatorWithPayload,
+} from '@reduxjs/toolkit';
+import { AppDispatch } from '../services/store';
+import {
+  CREATED,
+  CREATED_RU,
+  DONE,
+  DONE_RU,
+  PENDING,
+  PENDING_RU,
+} from './orderStatuses';
+import { IIngredientDetails, IMessage, TOrderStatus } from './types';
+
 export const setHash = (value: string) => `${value}_${new Date().getTime()}`;
 
 export const getAccessToken = () => localStorage.getItem('accessToken');
 export const getRefreshToken = () => localStorage.getItem('refreshToken');
+export const getClearAccessToken = () => {
+  const token = getAccessToken();
+  return token?.substring(7, token.length);
+};
 
 export const setAccessToken = (token: string) =>
   localStorage.setItem('accessToken', token);
@@ -10,3 +29,69 @@ export const setRefreshToken = (token: string) =>
 
 export const removeAccessToken = () => localStorage.removeItem('accessToken');
 export const removeRefreshToken = () => localStorage.removeItem('refreshToken');
+
+export const getOrderTimeStamp = (date: string | undefined) => {
+  if (!date) return null;
+
+  const dateTime = new Date(date);
+  const offset = dateTime.getTimezoneOffset() / -60;
+
+  const formatDate = dateTime.toLocaleDateString();
+  const formatTime = dateTime.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  const formatOffset = offset > 0 ? `+${offset}` : offset;
+
+  return `${formatDate}, ${formatTime} i-GMT${formatOffset}`;
+};
+
+export const getOrderPrice = (
+  orderIngredients: string[] | undefined,
+  allIngredients: IIngredientDetails[] | undefined
+) => {
+  if (!orderIngredients || !allIngredients) return 0;
+  return orderIngredients.reduce((sum: number, id: string) => {
+    const ingredient = allIngredients?.find((x) => x._id === id);
+    return ingredient ? sum + ingredient.price : sum;
+  }, 0);
+};
+
+export const getOrderStatus = (status: TOrderStatus | undefined) => {
+  switch (status) {
+    case DONE:
+      return DONE_RU;
+    case CREATED:
+      return CREATED_RU;
+    case PENDING:
+      return PENDING_RU;
+    default:
+      break;
+  }
+};
+
+export const wsInit = (
+  url: string,
+  dispatch: AppDispatch,
+  onOpen: ActionCreatorWithoutPayload<string>,
+  onError: ActionCreatorWithPayload<Event, string>,
+  onClose: ActionCreatorWithoutPayload<string>,
+  onMessage: ActionCreatorWithPayload<IMessage, string>
+) => {
+  const ws = new WebSocket(url);
+
+  ws.onopen = () => {
+    dispatch(onOpen());
+  };
+  ws.onerror = (event) => {
+    dispatch(onError(event));
+  };
+  ws.onmessage = (event: MessageEvent) => {
+    const data: IMessage = JSON.parse(event.data);
+    dispatch(onMessage(data));
+  };
+  ws.onclose = () => {
+    dispatch(onClose());
+  };
+  return ws;
+};

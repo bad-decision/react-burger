@@ -1,0 +1,27 @@
+.wrap {
+  width: 640px;
+  margin: 0 auto;
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+.orderNumber {
+  text-align: center;
+}
+.status {
+  color: #00cccc;
+}
+.consist {
+  display: flex;
+  max-height: 312px;
+  overflow: auto;
+  flex-direction: column;
+  gap: 16px;
+}
+.datePrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.price {
+  display: flex;
+}
