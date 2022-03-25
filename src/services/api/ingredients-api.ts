@@ -6,7 +6,7 @@ export const ingredientsApi = api.injectEndpoints({
     getIngredients: builder.query<IIngredientDetails[] | undefined, null>({
       query: () => 'ingredients',
       transformResponse: (response: IResponse<IIngredientDetails[]>) =>
-        response.data,
+        response?.data,
     }),
   }),
 });

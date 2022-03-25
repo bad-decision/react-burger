@@ -4,7 +4,7 @@ import {
   IIngredientDetails,
 } from '../../utils/types';
 
-const initialState: IBurgerIngredientState = {
+export const initialState: IBurgerIngredientState = {
   ingredientDetails: null,
 };
 
