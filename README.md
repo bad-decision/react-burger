@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Demo
+
+Please feel free for test [React Burger](http://51.250.102.7/) on Yandex Cloud.
+
 ## Available Scripts
 
 In the project directory, you can run:

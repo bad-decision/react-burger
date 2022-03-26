@@ -35,4 +35,11 @@ describe('make order correctly', function () {
 		cy.get('@orderBtn').click();
 		cy.get('p[class^=order-details_orderNumber]').should('be.not.empty');
 	});
+
+	it('should close order modal', function () {
+		cy.get('[class^=modal_modal__]').first().as('modal');
+		cy.get('@modal').find('span[class^=modal_closeIcon__]').first().as('closeBtn');
+		cy.get('@closeBtn').click();
+		cy.get('[class^=modal_modal__]').should('not.exist');
+	});
 }); 
