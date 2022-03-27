@@ -1,5 +1,9 @@
-import { useGetLastOrdersQuery } from '../../../services/api/order-api';
-import { useAppSelector } from '../../../services/hooks';
+import { useEffect } from 'react';
+import {
+  orderApi,
+  useGetLastOrdersQuery,
+} from '../../../services/api/order-api';
+import { useAppDispatch, useAppSelector } from '../../../services/hooks';
 import { MAX_PENDING_ORDERS, MAX_READY_ORDERS } from '../../../utils/const';
 import { DONE, PENDING } from '../../../utils/orderStatuses';
 import Orders from '../../orders/orders';
@@ -7,8 +11,15 @@ import styles from './feed-page.module.css';
 
 function FeedPage() {
   useGetLastOrdersQuery(null);
+  const dispatch = useAppDispatch();
   const { message } = useAppSelector((s) => s.feed);
   const { total, totalToday, orders } = message || {};
+
+  useEffect(() => {
+    return () => {
+      dispatch(orderApi.util.resetApiState());
+    };
+  }, [dispatch]);
 
   const readyOrders = orders?.filter((x) => x.status === DONE);
   const sliceReadyOrders =

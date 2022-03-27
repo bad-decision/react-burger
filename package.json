@@ -30,7 +30,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open cache clear",
+    "deploy-script": "npm run build && scp -r ./build/* redsfanatic@51.250.102.7:/home/redsfanatic/burger"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +52,7 @@
       "last 1 safari version"
     ]
   },
+  "homepage": "./",
   "devDependencies": {
     "@types/history": "^4.7.11",
     "@types/react-router-dom": "^5.3.3",

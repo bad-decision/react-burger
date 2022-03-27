@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
 import { Link, useHistory, Switch, Route, NavLink } from 'react-router-dom';
 import { useLogoutMutation } from '../../../services/api/auth-api';
-import { useGetUserOrdersQuery } from '../../../services/api/order-api';
+import {
+  orderApi,
+  useGetUserOrdersQuery,
+} from '../../../services/api/order-api';
 import { useAppDispatch, useAppSelector } from '../../../services/hooks';
 import { logOutUser } from '../../../services/reducers/auth-slice';
 import {
@@ -23,6 +27,12 @@ function ProfilePage() {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [logOutQuery] = useLogoutMutation();
+
+  useEffect(() => {
+    return () => {
+      dispatch(orderApi.util.resetApiState());
+    };
+  }, [dispatch]);
 
   useGetUserOrdersQuery(null);
   const { message } = useAppSelector((s) => s.orders);
