@@ -1,4 +1,10 @@
-import { IMessage, IOrder, IOrderResponse, IOrders } from '../../utils/types';
+import {
+  IMessage,
+  IOrder,
+  IOrderResponse,
+  IOrders,
+  TMakeOrderBody,
+} from '../../utils/types';
 import { api } from './api';
 import { getClearAccessToken, wsInit } from '../../utils/func';
 import { ALL_ORDERS_URL, USER_ORDERS_URL } from '../../utils/url';
@@ -15,10 +21,6 @@ import {
   feedOrdersWsOpened,
 } from '../reducers/feed-slice';
 
-type TMakeOrderBody = {
-  ingredients: string[];
-};
-
 export const orderApi = api.injectEndpoints({
   endpoints: (builder) => ({
     makeOrder: builder.mutation<number, TMakeOrderBody>({
@@ -30,13 +32,14 @@ export const orderApi = api.injectEndpoints({
       transformResponse: (response: IOrderResponse) => response.order.number,
     }),
 
-    getOrder: builder.query<IOrder, string>({
+    getOrder: builder.query<IOrder | null, string>({
       query: (id) => `orders/${id}`,
-      transformResponse: (response: IOrders) => response.orders[0],
+      transformResponse: (response: IOrders) =>
+        response.orders?.length > 0 ? response.orders[0] : null,
     }),
 
-    getLastOrders: builder.query<IMessage | undefined, null>({
-      queryFn: () => ({ data: undefined }),
+    getLastOrders: builder.query<IMessage | null, null>({
+      queryFn: () => ({ data: null }),
       async onCacheEntryAdded(_arg, { dispatch, cacheEntryRemoved }) {
         const ws = wsInit(
           ALL_ORDERS_URL,
@@ -51,8 +54,8 @@ export const orderApi = api.injectEndpoints({
       },
     }),
 
-    getUserOrders: builder.query<IMessage | undefined, null>({
-      queryFn: () => ({ data: undefined }),
+    getUserOrders: builder.query<IMessage | null, null>({
+      queryFn: () => ({ data: null }),
       async onCacheEntryAdded(_arg, { dispatch, cacheEntryRemoved }) {
         const token = getClearAccessToken();
         const ws = wsInit(

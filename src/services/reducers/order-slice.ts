@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IMessage, TWSState } from '../../utils/types';
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
   wsConnected: false,
   message: null,
 };

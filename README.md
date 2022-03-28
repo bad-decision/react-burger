@@ -1,6 +1,21 @@
-# Getting Started with Create React App
+# About project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a web site to order stellars burgers.
+
+In this project were used the following techniques:
+
+- React (project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).);
+- React Router Dom to route app;
+- Redux Toolkit to manage state for app;
+- Redux Toolkit Query to work with api and web sockets;
+- React DnD to up user experience on making order;
+- Jest and Cypress to test app;
+
+This project is set up by TypeScript.
+
+## Demo
+
+Please feel free for test [Stellars Burger](http://51.250.102.7/) on Yandex Cloud.
 
 ## Available Scripts
 
@@ -38,6 +53,14 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+### `npm run cypress`
+
+Run cypress tests.
+
+### `npm run deploy-script`
+
+Builds the app for production to the `build` folder and deploy files to remote server of Yandex Cloud. Please see [Demo](http://51.250.102.7/).
 
 ## Learn More
 

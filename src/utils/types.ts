@@ -105,3 +105,12 @@ export type TWSState = {
   message: IMessage | null;
   error?: Event;
 };
+
+export type TMakeOrderBody = {
+  ingredients: string[];
+};
+
+export enum Headers {
+  Authorization = 'authorization',
+  Accept = 'Accept',
+}
